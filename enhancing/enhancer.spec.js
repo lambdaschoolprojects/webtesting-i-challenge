@@ -44,7 +44,7 @@ describe('Testing enhancer.js', () => {
     //  - The item's enhancement increases by 1.
     //  - If the item enhancement level is 20, the enhancement level is not changed.
     //  - The durability of the item is not changed.
-    describe('Testing success(item)', () => {
+    describe('success(item)', () => {
         it('returns a new object', () => {
             const testSword = { ...baseSword };
             const newSword = enhancer.succeed(testSword);
@@ -62,6 +62,34 @@ describe('Testing enhancer.js', () => {
             const newBook = enhancer.succeed(testBook);
 
             expect(newBook.enhancement).not.toBeGreaterThan(20);
+        })
+    });
+
+    // a fail(item) method that accepts an item object and returns a
+    // new item object modified according to the rules defined by the
+    // client for enhancement failure.
+    //
+    // When enhancement fails
+    //  - If the item's enhancement is less than 15, the
+    //     durability of the item is decreased by 5.
+    //  - If the item's enhancement is 15 or more, the
+    //    durability of the item is decreased by 10.
+    //  - If the item's enhancement level is greater than
+    //    16, the enhancement level decreases by 1 (17 goes
+    //    down to 16, 18 goes down to 17).
+    describe('fail(item)', () => {
+        it('returns a new object', () => {
+            const testSword = { ...baseSword };
+            const newSword = enhancer.succeed(testSword);
+
+            expect(newSword).not.toBe(testSword);
+        });
+
+        it('decreases durability by 5 if enhancement is less than 15', () => {
+            const testBook = { ...baseBook, enhancement: 14 };
+            const newBook = enhancer.fail(testBook);
+
+            expect(newBook.durability).toBe(testBook.durability - 5);
         })
     });
 });
