@@ -117,4 +117,26 @@ describe('Testing enhancer.js', () => {
             expect(newSword.enhancement).toBe(testSword.enhancement);
         })
     });
+
+    // Add a get() method to the enhancer object that takes an item and returns a new
+    // item with the name property modified according to the following rules:
+    //  - if the enhancement level is 0, the the name is not modified.
+    //  - if the enhancement level is greater than 0, change the name to include the enhancement
+    //    level, preceded by a plus sign ( + ), between square brackets before the item's name.
+    //    Example: the name of a "Iron Sword" enhanced to 7 would be "[+7] Iron Sword".
+    describe('get(item)', () => {
+       it('returns copy of item when enhancement is 0', () => {
+         const testBook = { ...baseBook, enhancement: 0 };
+         const newBook = enhancer.get(testBook);
+
+         expect(newBook).not.toBe(testBook);
+         expect(newBook).toEqual(testBook);
+       });
+       it('prepends [+n] to the name where n = enhancement when enhancement is greater than 0', () => {
+           const testSword = { ...baseSword, name: 'Sword', enhancement: 5 };
+           const newSword = enhancer.get(testSword);
+
+           expect(newSword.name).toBe('[+5] Sword');
+       })
+    });
 });
