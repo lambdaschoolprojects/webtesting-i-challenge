@@ -9,15 +9,59 @@ const baseSword = {
 const baseBook = {
     name: "An Old Book",
     durability: 5,
-    enhancement: 10
+    enhancement: 20
 };
 
 const baseShield = {
     name: "An Iron Shield",
     durability: 15,
-    enhancement: 2
+    enhancement: 19
 };
 
 describe('Testing enhancer.js', () => {
+    // a repair(item) method that accepts an item object and
+    // returns a new item with the durability restored to 100.
+    describe('Testing repair(item)', () => {
+        it('returns a new item when passed an existing item', () => {
+            const testSword = { ...baseSword };
+            const result = enhancer.repair(testSword);
 
-})
+            expect(result).not.toBe(testSword);
+        });
+        it('returns an item with a durability of 100', () => {
+            const testBook = { ...baseBook };
+            const result = enhancer.repair(testBook);
+
+            expect(result.durability).toBe(100);
+        });
+    });
+
+    // a success(item) method that accepts an item object and
+    // returns a new item object modified according to the
+    // rules defined by the client for enhancement success.
+    //
+    // When enhancement succeeds
+    //  - The item's enhancement increases by 1.
+    //  - If the item enhancement level is 20, the enhancement level is not changed.
+    //  - The durability of the item is not changed.
+    describe('Testing success(item)', () => {
+        it('returns a new object', () => {
+            const testSword = { ...baseSword };
+            const newSword = enhancer.succeed(testSword);
+
+            expect(newSword).not.toBe(testSword);
+        });
+        it('returns enhancement increased by 1 if currently less than 20', () => {
+           const testShield = { ...baseShield };
+           const newShield = enhancer.succeed(testShield);
+
+           expect(newShield.enhancement).toBe(testShield.enhancement + 1);
+        });
+        it ('returns enhancement of 20 if already 20', () => {
+            const testBook = { ...baseBook };
+            const newBook = enhancer.succeed(testBook);
+
+            expect(newBook.enhancement).not.toBeGreaterThan(20);
+        })
+    });
+});
