@@ -21,7 +21,7 @@ const baseShield = {
 describe('Testing enhancer.js', () => {
     // a repair(item) method that accepts an item object and
     // returns a new item with the durability restored to 100.
-    describe('Testing repair(item)', () => {
+    describe('repair(item)', () => {
         it('returns a new item when passed an existing item', () => {
             const testSword = { ...baseSword };
             const result = enhancer.repair(testSword);
@@ -90,6 +90,31 @@ describe('Testing enhancer.js', () => {
             const newBook = enhancer.fail(testBook);
 
             expect(newBook.durability).toBe(testBook.durability - 5);
+        });
+
+        it('decreases durability by 10 if enhancement is 15 or more', () => {
+            const testShield = { ...baseShield, enhancement: 15 };
+            const newShield = enhancer.fail(testShield);
+
+            expect(newShield.durability).toBe(testShield.durability - 10);
+        });
+
+        it('decreases enhancement level by 1 if enhancement is greater than 16', () => {
+           const testSword = { ...baseSword, enhancement: 17 }
+           const newSword = enhancer.fail(testSword);
+
+           expect(newSword.enhancement).toBe(testSword.enhancement - 1);
+        });
+
+        it('does not decrease enhancement if enhacement is 16 or less', () => {
+            const testBook = { ...baseBook, enhancement: 16 };
+            const testSword = { ...baseSword, enhancement: 14 };
+
+            const newBook = enhancer.fail(testBook);
+            const newSword = enhancer.fail(testSword);
+
+            expect(newBook.enhancement).toBe(testBook.enhancement);
+            expect(newSword.enhancement).toBe(testSword.enhancement);
         })
     });
 });
