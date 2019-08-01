@@ -6,17 +6,31 @@ module.exports = {
 };
 
 function succeed(item) {
-  return { ...item };
+  const enhancement =
+      item.enhancement == 20 ? 20 : (item.enhancement + 1 );
+
+  return { ...item, enhancement };
 }
 
 function fail(item) {
-  return { ...item };
+  const newItem = {...item} ;
+  if (item.enhancement < 15)
+    newItem.durability = (newItem.durability - 5);
+  else
+    newItem.durability = (newItem.durability - 10);
+
+  if (item.enhancement > 16) newItem.enhancement = (newItem.enhancement - 1)
+
+  return newItem;
 }
 
 function repair(item) {
-  return { ...item };
+  return { ...item, durability: 100 };
 }
 
 function get(item) {
-  return { ...item };
+    const newItem = { ...item };
+    if (newItem.enhancement > 0)
+        newItem.name = `[+${newItem.enhancement}] ${newItem.name}`
+  return newItem;
 }
